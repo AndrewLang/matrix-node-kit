@@ -31,14 +31,48 @@ export function findFile(folder, pattern) {
     }
 }
 
-const appConfig = {   
+const appConfig = {
+    Package: './package.json',
+    Config: './tsconfig.json',
     Src: 'src/**/*.ts',
     Output: './dist'
 }
+
+gulp.task('build:clean', (done) => {
+    log('Start cleaning dist folder...');
+    shell.rm('-rf', appConfig.Output);
+    success(`Output folder is clean.`);
+
+    done();
+});
+
 gulp.task('build:ts', () => {
-    const tsProject = ts.createProject('./tsconfig.json');
+    const tsProject = ts.createProject(appConfig.Config);
+
     return gulp.src(appConfig.Src)
         .pipe(tsProject())
         .pipe(gulp.dest(appConfig.Output));
 });
+gulp.task('copy:package', (done) => {
+    let pack = require(appConfig.Package);
+    pack.scripts = {};
 
+    let filename = path.join(appConfig.Output, appConfig.Package);
+    fs.writeFileSync(`${filename}`, JSON.stringify(pack, null, 2));
+
+    done();
+});
+gulp.task('build', gulp.series('build:clean', 'build:ts', 'copy:package', (done) => {
+    done();
+}));
+
+gulp.task('publish', (done) => {
+    log('Start publish package...');
+    shell.exec(`npm publish dist --access=public`);
+    success(`Package is published.`);
+
+    done();
+});
+gulp.task('release', gulp.series('build', 'publish', (done) => {
+    done();
+}));

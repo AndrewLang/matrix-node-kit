@@ -5,7 +5,7 @@ export class FileSizeCalculator {
         Bytes: ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
     };
 
-    static Calculate(size: number, precision = 2, useBit = false): string {
+    static Calculate(size: number, precision = 0, useBit = false): string {
         if (isNaN(parseFloat(String(size))) || !isFinite(size)) {
             return '?';
         }

@@ -3,16 +3,16 @@ import { IDatabaseAdapter } from './database-adapter';
 import { ISqlStatementBuilder } from './statement-builder';
 import { SqliteStatementBuilder } from './sqlite-statement-builder';
 import * as sqlite from 'sqlite';
-import { Logger } from '../logging/logger';
+import { ConsoleLogger } from '../logging/console/console-logger';
 
 export class SqliteAdapter implements IDatabaseAdapter {
     private db: sqlite.Database;
-    private logger: Logger;
+    private logger: ConsoleLogger;
 
     Builder: ISqlStatementBuilder = new SqliteStatementBuilder();
 
     constructor(private filePath: string) {
-        this.logger = new Logger('Sqlite Adapter:');
+        this.logger = new ConsoleLogger('Sqlite Adapter:');
     }
     async Query(sql: string) {
         let items: any[];

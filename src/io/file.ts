@@ -1,14 +1,12 @@
 
 import * as EventStream from 'event-stream';
 import * as fs from 'fs';
-// import * as Mime from 'mime';
 import * as path from 'path';
 import { ConsoleLogger } from '../logging/index';
 import { FileSizeCalculator } from './filesize';
 
-
 export class File {
-    private static logger = new ConsoleLogger('File: ');
+    private static logger = new ConsoleLogger('File ');
     /**
      * Check whether given file is exist.
      * @param filename full file name with path
@@ -48,21 +46,6 @@ export class File {
         }
     }
     /**
-     * Read file content in sync mode
-     * @param filename filename to read
-     * @param encoding encoding use to read file
-     */
-    static ReadAllText(filename: string, encoding: string): string {
-        let content = '';
-        try {
-            content = fs.readFileSync(filename, encoding);
-        } catch (error) {
-            File.logger.Error(error);
-            content = '';
-        }
-        return content;
-    }
-    /**
      * Copy file
      * @param source source file to read
      * @param destination destination file to write
@@ -96,7 +79,6 @@ export class File {
             File.logger.Error(error);
         }
     }
-
     /**
      * 
      * @param filename 
@@ -108,26 +90,32 @@ export class File {
         }
         return folder;
     }
-   
     /**
-     * Whether given file exist
-     * @param path file path
+     * Read file content in sync mode
+     * @param filename filename to read
+     * @param encoding encoding use to read file
      */
-    static Exist(path: string): boolean {
+    static ReadAllText(filename: string, encoding: string): string {
+        let content = '';
         try {
-            fs.accessSync(path, fs.constants.F_OK);
-            return true;
-        } catch (e) {
-            return false;
+            content = fs.readFileSync(filename, encoding);
+        } catch (error) {
+            File.logger.Error(error);
+            content = '';
         }
+        return content;
     }
-    /**
-     * Normalize given path
-     * @param path 
-     */
-    static NormalizePath(path: string): string {
-        return path.normalize(path);
-    }
+    static ReadJson(filename: string, encoding: string): any {
+        let value = {};
+        try {
+            let content = fs.readFileSync(filename, encoding);
+            value = JSON.parse(content);
+        } catch (error) {
+            File.logger.Error(error);            
+        }
+        return value;
+    }    
+    
     /**
      * Read file in async mode
      * @param file 
@@ -135,7 +123,7 @@ export class File {
     static ReadFileAsync(file: string): Promise<any> {
         let self = File;
         return new Promise(function (resolve, reject) {
-            if (!self.Exist(file))
+            if (!self.Exists(file))
                 reject(new Error(`File doesn't exist.`));
 
             fs.readFile(file, 'utf8', (error: any, data: any) => {
@@ -182,7 +170,7 @@ export class File {
         let fullPath = File.NormalizePath(file.toString());
         File.logger.Error('Full path: ' + fullPath);
         return new Promise(function (resolve, reject) {
-            if (!self.Exist(fullPath))
+            if (!self.Exists(fullPath))
                 reject(new Error(`File doesn't exist.' + fullPath`));
 
             File.logger.Error('File to open ' + fullPath);
@@ -200,12 +188,13 @@ export class File {
     static ReadFileAsBase64(file: string): string {
         let self = File;
         let fullPath = File.NormalizePath(file.toString());
-        if (!self.Exist(fullPath))
+        if (!self.Exists(fullPath))
             throw Error(`File doesn't exist.${fullPath}`);
 
         let data = fs.readFileSync(fullPath, 'base64');
         let buffer = new Buffer(data, 'base64');
         let base64Data = buffer.toString('base64');
+
         return base64Data;
 
     }
@@ -232,6 +221,13 @@ export class File {
             });
         });
     }
+    /**
+     * Normalize given path
+     * @param path 
+     */
+    static NormalizePath(path: string): string {
+        return path.normalize(path);
+    }   
     
     /**
      * Get file name  with extension

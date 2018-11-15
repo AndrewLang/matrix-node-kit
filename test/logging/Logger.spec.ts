@@ -1,11 +1,11 @@
 import { TestBed, async } from '@angular/core/testing';
-import { Logger } from '../src/logging/Logger';
-import { DefaultLoggerFactory } from '../src/logging/DefaultLoggerFactory';
-import { ILoggerProvider } from '../src/logging/ILoggerProvider';
-import { ILogger } from '../src/logging/ILogger';
-import { LogLevel } from '../src/logging/LogLevel';
-import { LoggerBase } from '../src/logging/LoggerBase';
-import '../src/logging/LoggerFactoryExtensions';
+import { Logger } from '../../src/logging/Logger';
+import { DefaultLoggerFactory } from '../../src/logging/DefaultLoggerFactory';
+import { ILoggerProvider } from '../../src/logging/ILoggerProvider';
+import { ILogger } from '../../src/logging/ILogger';
+import { LogLevel } from '../../src/logging/LogLevel';
+import { LoggerBase } from '../../src/logging/LoggerBase';
+import '../../src/logging/LoggerFactoryExtensions';
 
 export class MockLogger extends LoggerBase {
     Log(level: LogLevel, eventId: number, state: any, error: Error, formatter: (any, Error) => string) {

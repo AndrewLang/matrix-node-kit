@@ -27,8 +27,8 @@ export class LoggerFactoryExtensions {
     * @param this ILoggerFactory instance
     */
     static AddLog4Js(this: ILoggerFactory): ILoggerFactory;
-    static AddLog4Js(this: ILoggerFactory, initializer?: () => void, logFileName = 'log.txt'): ILoggerFactory {
-        let provider = new Log4JsLoggerProvider(initializer, logFileName);
+    static AddLog4Js(this: ILoggerFactory, initializer?: () => void, appName = '', logFileName = 'log.txt'): ILoggerFactory {
+        let provider = new Log4JsLoggerProvider(initializer, appName, logFileName);
         this.AddProvider(provider);
         return this;
     }

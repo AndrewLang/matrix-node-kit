@@ -19,7 +19,6 @@ gulp.task('build:clean', (done) => {
 
     done();
 });
-
 gulp.task('build:ts', () => {
     const tsProject = ts.createProject(appConfig.Config);
 
@@ -39,7 +38,6 @@ gulp.task('copy:package', (done) => {
 gulp.task('build', gulp.series('build:clean', 'build:ts', 'copy:package', (done) => {
     done();
 }));
-
 gulp.task('publish', (done) => {
     Common.log('Start publish package...');
     shell.exec(`npm publish dist --access=public`);

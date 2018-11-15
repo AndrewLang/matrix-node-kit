@@ -24,7 +24,6 @@ export class DebugLogger extends LoggerBase {
         } else {
             console.log(timestamp, this.Name, state);
         }
-
     }
 
     private getTime(): string {

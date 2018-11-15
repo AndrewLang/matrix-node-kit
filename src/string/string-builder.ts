@@ -46,11 +46,14 @@ export class StringBuilder {
             } else {
                 this.content.push(item);
             }
-        }
+
+            this.latest = null;
+        }        
     }
     private Build(): string {
         if (this.latest != null)
             return this.latest;
+            
         this.latest = this.Join('');
         return this.latest;
     }

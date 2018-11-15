@@ -3,12 +3,12 @@ import * as EventStream from 'event-stream';
 import * as fs from 'fs';
 // import * as Mime from 'mime';
 import * as path from 'path';
-import { Logger } from '../logging/index';
+import { ConsoleLogger } from '../logging/index';
 import { FileSizeCalculator } from './filesize';
 
 
 export class File {
-    private static logger = new Logger('File: ');
+    private static logger = new ConsoleLogger('File: ');
     /**
      * Check whether given file is exist.
      * @param filename full file name with path

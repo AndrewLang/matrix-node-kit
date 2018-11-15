@@ -3,16 +3,19 @@ import * as glob from 'glob';
 import * as path from 'path';
 
 
-export function isMac() {
+export function IsMac() {
     return os.platform() === 'darwin';
 }
 
-export function isLinux() {
+export function IsLinux() {
     return os.platform() === 'linux';
 }
 
-export function isWindows() {
+export function IsWindows() {
     return os.platform() === 'win32';
+}
+export function GetOsName(): string {
+    return os.platform();
 }
 
 export function loadModules(folder: string, extension = 'js') {
